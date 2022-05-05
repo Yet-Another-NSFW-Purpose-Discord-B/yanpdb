@@ -48,14 +48,15 @@ class nsfw(commands.Cog):
     @app_commands.command(description="Get Some Helltaker Porn")
     @app_commands.check(is_nsfw)
     async def helltaker(self, interaction: discord.Interaction):
-        choice = random.choice(os.listdir("/var/www/hosst/helltakerpics"))
-        image = os.path.join("/var/www/hosst/helltakerpics", choice)
-        file = discord.File(image, filename=f"{choice}")
-        embed = discord.Embed(description=f"**Heres some helltaker porn for ya, dirty fuck.**", color=0xc98cbf )
-        embed.set_image(url=f"attachment://{choice}")
-        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-        embed.set_footer(text="Powered by My own set of images i found!")
-        await interaction.response.send_message(embed=embed, file=file)
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://nsfw.hosst.gay/helltaker") as request:
+                data = await request.json()
+                print(data['url'])
+                embed = discord.Embed(description=f"**Heres some helltaker porn for ya, dirty fuck.**", color=0xc98cbf )
+                embed.set_image(url=data['url'])
+                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+                embed.set_footer(text="Powered by My own set of images i found!")
+                await interaction.response.send_message(embed=embed)
         
         
 
