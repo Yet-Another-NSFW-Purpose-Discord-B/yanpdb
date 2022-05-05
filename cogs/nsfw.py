@@ -22,7 +22,8 @@ class nsfw(commands.Cog):
     @app_commands.choices(feature=[
         Choice(name="neko", value="neko"),
         Choice(name="waifu", value="waifu"),
-        Choice(name="trap", value="trap")
+        Choice(name="trap", value="trap"),
+        Choice(name="blowjob", value="blowjob")
     ])
     async def neko(self, interaction: discord.Interaction, feature:Choice[str]):
         async with aiohttp.ClientSession() as session:
@@ -56,7 +57,7 @@ class nsfw(commands.Cog):
         embed.set_footer(text="Powered by My own set of images i found!")
         await interaction.response.send_message(embed=embed, file=file)
         
-
+        
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(nsfw(bot))
