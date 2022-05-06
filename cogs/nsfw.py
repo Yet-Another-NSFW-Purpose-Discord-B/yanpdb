@@ -52,10 +52,10 @@ class nsfw(commands.Cog):
             async with session.get("https://nsfw.hosst.gay/helltaker") as request:
                 data = await request.json()
                 print(data['url'])
-                embed = discord.Embed(description=f"**Heres some helltaker porn for ya, dirty fuck.**", color=0xc98cbf )
+                embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
                 embed.set_image(url=data['url'])
                 embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-                embed.set_footer(text="Powered by My own set of images i found!")
+                embed.set_footer(text="Powered by nsfw.hosst.gay!")
                 await interaction.response.send_message(embed=embed)
         
         
