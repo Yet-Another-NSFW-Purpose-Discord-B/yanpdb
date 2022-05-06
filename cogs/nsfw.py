@@ -58,7 +58,19 @@ class nsfw(commands.Cog):
                 embed.set_footer(text="Powered by nsfw.hosst.gay!")
                 await interaction.response.send_message(embed=embed)
         
-        
+    @app_commands.command(description="Shows hentai")
+    @app_commands.check(is_nsfw)
+    async def hentai(self, interaction: discord.Interaction):
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://nsfw.hosst.gay/hentai") as request:
+                data = await request.json()
+                print(data['url'])
+                embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
+                embed.set_image(url=data['url'])
+                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+                embed.set_footer(text="Powered by nsfw.hosst.gay!")
+                await interaction.response.send_message(embed=embed)
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(nsfw(bot))
