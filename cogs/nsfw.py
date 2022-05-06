@@ -49,7 +49,7 @@ class nsfw(commands.Cog):
     @app_commands.check(is_nsfw)
     async def helltaker(self, interaction: discord.Interaction):
         async with aiohttp.ClientSession() as session:
-            async with session.get("https://nsfw.hosst.gay/helltaker") as request:
+            async with session.get("https://nsfw.hosst.gay/api/v1/helltaker") as request:
                 data = await request.json()
                 print(data['url'])
                 embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
@@ -62,7 +62,7 @@ class nsfw(commands.Cog):
     @app_commands.check(is_nsfw)
     async def hentai(self, interaction: discord.Interaction):
         async with aiohttp.ClientSession() as session:
-            async with session.get("https://nsfw.hosst.gay/hentai") as request:
+            async with session.get("https://nsfw.hosst.gay/api/v1/hentai") as request:
                 data = await request.json()
                 print(data['url'])
                 embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
