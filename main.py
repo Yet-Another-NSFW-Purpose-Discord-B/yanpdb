@@ -19,7 +19,7 @@ class MyBot(commands.AutoShardedBot):
             print(f'Running {self.shard_count} shards')
 
 intents = discord.Intents.all()
-bot = MyBot(command_prefix="yan", intents=intents, status=discord.Status.dnd,activity=discord.Activity(type=discord.ActivityType.watching, name='hentai and porn'))
+bot = MyBot(command_prefix="yan", intents=intents, status=discord.Status.dnd,activity=discord.Activity(type=discord.ActivityType.watching, name='Questionable Things'))
 
 async def main():
     async with bot:
