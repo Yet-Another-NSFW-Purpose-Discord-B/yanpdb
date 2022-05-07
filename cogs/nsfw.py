@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.app_commands import Choice
 import os
 import random
+import pathlib
 
 class nsfw(commands.Cog):
     def __init__(self, bot:commands.Bot):
@@ -70,6 +71,24 @@ class nsfw(commands.Cog):
                 embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
                 embed.set_footer(text="Powered by thino.pics!")
                 await interaction.response.send_message(embed=embed)
+
+    @app_commands.command(description=f"Search for an image")
+    @app_commands.check(is_nsfw)
+    async def search(self, interaction:discord.Interaction, image: str):
+        dir = "/root/yanpdb/nsfw_cdn/"
+        p = pathlib.Path(dir)
+        
+        for f in p.rglob(image):
+            print(str(f.parent))
+
+        finished_url = f"https://i.thino.pics/{str(image)}"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"https://i.thino.pics/search/{image}") as request:
+                data = await request.json()
+                url = data['url']
+        
+        await interaction.response.send_message(f"{url}, {finished_url}")
+
 
 
 async def setup(bot: commands.Bot):
