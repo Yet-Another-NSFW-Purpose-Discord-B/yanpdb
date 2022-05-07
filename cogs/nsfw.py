@@ -6,6 +6,9 @@ from discord.app_commands import Choice
 import os
 import random
 import pathlib
+from typing import Optional
+
+
 
 class nsfw(commands.Cog):
     def __init__(self, bot:commands.Bot):
