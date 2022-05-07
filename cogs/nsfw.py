@@ -93,6 +93,9 @@ class nsfw(commands.Cog):
                 if url == "https://thino.pics/api/v1/helltaker":
                     url_endpoint = "Helltaker"
         
+        print(url_endpoint)
+        print(url)
+        print(finished_url)
         embed = discord.Embed(description=f"Found the file name: [{image}]({finished_url}) at the endpoint: [{url_endpoint}]({url})")
         embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
         embed.set_image(url=finished_url)
