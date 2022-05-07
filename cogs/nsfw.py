@@ -86,8 +86,19 @@ class nsfw(commands.Cog):
             async with session.get(f"https://i.thino.pics/search/{image}") as request:
                 data = await request.json()
                 url = data['url']
+                
+                if url == "https://thino.pics/api/v1/hentai":
+                    url_endpoint = "hentai"
+                
+                if url == "https://thino.pics/api/v1/helltaker":
+                    url_endpoint = "Helltaker"
         
-        await interaction.response.send_message(f"{url}, {finished_url}")
+        embed = discord.Embed(description=f"Found the file name: [{image}]({finished_url}) at the endpoint: [{url_endpoint}]({url})")
+        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+        embed.set_image(url=finished_url)
+        embed.set_footer(text="Powered by thino.pics!")
+
+        await interaction.response.send_message(embed=embed)
 
 
 
