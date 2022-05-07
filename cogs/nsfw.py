@@ -75,6 +75,20 @@ class nsfw(commands.Cog):
                 embed.set_footer(text="Powered by thino.pics!")
                 await interaction.response.send_message(embed=embed)
 
+    @app_commands.command(description="Shows hot af tomboy porn")
+    @app_commands.check(is_nsfw)
+    async def tomboy(self, interaction: discord.Interaction):
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://thino.pics/api/v1/tomboy") as request:
+                data = await request.json()
+                print(data['url'])
+                embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
+                embed.set_image(url=data['url'])
+                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+                embed.set_footer(text="Powered by thino.pics!")
+                await interaction.response.send_message(embed=embed)
+
+
     @app_commands.command(description=f"Search for an image")
     @app_commands.check(is_nsfw)
     async def search(self, interaction:discord.Interaction, image: str):
