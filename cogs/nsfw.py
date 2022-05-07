@@ -95,6 +95,9 @@ class nsfw(commands.Cog):
                 
                 if url == "https://thino.pics/api/v1/helltaker":
                     url_endpoint = "Helltaker"
+
+                if url == "https://thino.pics/api/v1/neko":
+                    url_endpoint = "neko"
         
         print(url_endpoint)
         print(url)
