@@ -16,8 +16,12 @@ class MyBot(commands.AutoShardedBot):
         print(f"Logged in as {self.user}")
         if self.shard_count >= 1:
             print(f'Running {self.shard_count} shard')
+            for extension in bot.cogs:
+                print(f"Loaded cogs.{extension}")
         else:
             print(f'Running {self.shard_count} shards')
+            for extension in self.cogs:
+                print(f"Loaded cogs.{extension}")
 
     async def setup_hook(self):
         self.loop.create_task(ch_pr())
