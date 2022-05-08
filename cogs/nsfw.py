@@ -1,3 +1,4 @@
+import datetime
 import aiohttp
 import discord
 from discord.ext import commands
@@ -89,7 +90,7 @@ class nsfw(commands.Cog):
                 await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(description=f"Search for an image")
+    @app_commands.command(description=f"Search for an image from the thino.pics API")
     @app_commands.check(is_nsfw)
     async def search(self, interaction:discord.Interaction, image: str):
         dir = "/root/yanpdb/nsfw_cdn/"
@@ -112,11 +113,14 @@ class nsfw(commands.Cog):
 
                 if url == "https://thino.pics/api/v1/neko":
                     url_endpoint = "neko"
+
+                if url == "https://thino.pics/api/v1/tomboy":
+                    url_endpoint = "tomboy"
         
         print(url_endpoint)
         print(url)
         print(finished_url)
-        embed = discord.Embed(description=f"Found the file name: [{image}]({finished_url}) at the endpoint: [{url_endpoint}]({url})")
+        embed = discord.Embed(description=f"Found the file name: [{image}]({finished_url}) at the endpoint: [{url_endpoint}]({url})", timestamp=datetime.datetime.utcnow())
         embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
         embed.set_image(url=finished_url)
         embed.set_footer(text="Powered by thino.pics!")
