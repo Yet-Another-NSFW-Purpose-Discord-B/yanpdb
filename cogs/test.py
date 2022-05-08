@@ -6,6 +6,7 @@ from discord.ext import commands
 from discord import app_commands    
 from discord.app_commands import Choice
 
+
 class Feedback(discord.ui.Modal, title='Feedback'):
     # Our modal classes MUST subclass `discord.ui.Modal`,
     # but the title can be whatever you want.
@@ -33,7 +34,7 @@ class Feedback(discord.ui.Modal, title='Feedback'):
 
     async def on_submit(self, interaction: discord.Interaction):
         channel = interaction.guild.get_channel(913562181474336839)
-        await channel.send(f'Feedback recieved: {self.feedback.value}!')
+        await channel.send(f'Feedback recieved: {self.feedback.value}')
         await interaction.response.send_message(f'Thanks for your feedback, {self.name.value}', ephemeral=True)
 
     async def on_error(self, error: Exception, interaction: discord.Interaction) -> None:
