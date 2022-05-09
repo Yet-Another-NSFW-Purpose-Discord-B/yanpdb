@@ -33,8 +33,8 @@ class Feedback(discord.ui.Modal, title='Feedback'):
     )
 
     async def on_submit(self, interaction: discord.Interaction):
-        channel = interaction.guild.get_channel(913562181474336839)
-        await channel.send(f'Feedback recieved: {self.feedback.value}')
+        channel = interaction.guild.get_channel(972737411425648661)
+        await channel.send(f'Feedback recieved: {self.feedback.value}\nSent by **{self.name.value}**')
         await interaction.response.send_message(f'Thanks for your feedback, {self.name.value}', ephemeral=True)
 
     async def on_error(self, error: Exception, interaction: discord.Interaction) -> None:
@@ -69,9 +69,9 @@ class testing(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command()
-    async def testing1(self, ctx:commands.Context):
-        await ctx.send('Do you want to continue?', view=Confirm())
+    @app_commands.command()
+    async def feedback(self, interaction:discord.Interaction):
+        await interaction.response.send_message("Click on confirm button to send modal for feedback", view=Confirm())
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(testing(bot))
