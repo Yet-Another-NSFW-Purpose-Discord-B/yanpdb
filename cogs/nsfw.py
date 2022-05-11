@@ -8,7 +8,7 @@ import os
 import random
 import pathlib
 from typing import Optional
-
+import thino
 
 
 class nsfw(commands.Cog):
@@ -128,7 +128,7 @@ class nsfw(commands.Cog):
 
         finished_url = f"https://i.thino.pics/{str(image)}"
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"https://i.thino.pics/search/{image}") as request:
+            async with session.get(f"https://thino.pics/search/{image}") as request:
                 data = await request.json()
                 url = data['url']
                 
@@ -157,7 +157,11 @@ class nsfw(commands.Cog):
 
         await interaction.response.send_message(embed=embed)
 
+    @app_commands.command()
+    async def status(self, interaction: discord.Interaction, endpoint: str):
+        status_code = await thino.status(endpoint)
 
+        return await interaction.response.send_message(status_code)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(nsfw(bot))

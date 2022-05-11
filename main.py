@@ -28,6 +28,8 @@ class MyBot(commands.AutoShardedBot):
 
 intents = discord.Intents.all()
 bot = MyBot(command_prefix="yan ", intents=intents)
+os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
+
 
 @tasks.loop(seconds=30)
 async def ch_pr():
