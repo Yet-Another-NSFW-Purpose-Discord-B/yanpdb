@@ -22,6 +22,30 @@ class nsfw(commands.Cog):
         return False
     
     
+    @app_commands.command(description=f"Select an endpoint to get NSFW pictures from.")
+    @app_commands.check(is_nsfw)
+    @app_commands.choices(endpoint=[
+        Choice(name="neko", value="neko"),
+        Choice(name="hentai", value="hentai"),
+        Choice(name="tomboy", value="tomboy"),
+        Choice(name="helltaker", value="helltaker"),
+        Choice(name="femboy", value="femboy"),
+        Choice(name="dildo", value="dildo"),
+        Choice(name="porn", value="porn"),
+        Choice(name="feet", value="feet")
+    ])
+    async def nsfw(self, interaction:discord.Interaction,endpoint:Choice[str]):
+        data = await thino.img(endpoint.value)
+        url = data["endpoint"]
+        
+        
+        
+        embed = discord.Embed(description=f"File Name: [{data['filename']}]({data['url']}) \nEndpoint: [{endpoint.value}](https://thino.pics{data['endpoint']})", color=0xc98cbf )
+        embed.set_image(url=data['url'])
+        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text="Powered by thino.pics!")
+        await interaction.response.send_message(embed=embed)
+
     @app_commands.command(description="Show NSFW neko pics! ")
     @app_commands.check(is_nsfw)
     @app_commands.choices(feature=[

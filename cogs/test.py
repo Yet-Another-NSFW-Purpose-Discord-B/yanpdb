@@ -75,42 +75,6 @@ class testing(commands.Cog):
     async def feedback(self, interaction:discord.Interaction):
         await interaction.response.send_message("Click on confirm button to send modal for feedback", view=Confirm())
 
-    @app_commands.command()
-    async def test_nsfw(self, interaction:discord.Interaction, endpoint: str):
-        data = await thino.img(endpoint)
-        url = data["endpoint"]
-        if url == "https://thino.pics/api/v1/hentai":
-            url_endpoint = "hentai"
-        
-        if url == "https://thino.pics/api/v1/helltaker":
-            url_endpoint = "Helltaker"
-
-        if url == "https://thino.pics/api/v1/neko":
-            url_endpoint = "neko"
-
-        if url == "https://thino.pics/api/v1/tomboy":
-            url_endpoint = "tomboy"
-        
-        if url == "https://thino.pics/api/v1/femboy":
-            url_endpoint = "femboy"
-        
-        if url == "https://thino.pics/api/v1/thighs":
-            url_endpoint = "thighs"
-
-        if url == "https://thino.pics/api/v1/dildo":
-            url_endpoint = "dildo"
-        
-        if url == "https://thino.pics/api/v1/porn":
-            url_endpoint = "porn"
-        
-        
-        
-        
-        embed = discord.Embed(description=f"Found File: [{data['filename']}]({data['url']}) on endpoint: [{url_endpoint}](https://thino.pics{data['endpoint']})", color=0xc98cbf )
-        embed.set_image(url=data['url'])
-        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-        embed.set_footer(text="Powered by thino.pics!")
-        await interaction.response.send_message(embed=embed)
 
     @app_commands.command()
     async def test_search(self, interaction:discord.Interaction, filename: str):
