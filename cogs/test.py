@@ -78,8 +78,9 @@ class testing(commands.Cog):
 
     @app_commands.command()
     async def test_search(self, interaction:discord.Interaction, filename: str):
-        data = await thino.search(filename)
-        url = data["url"]
+        client = thino.Client()
+        data = await client.search(filename)
+        url = data.url
         if url == "https://thino.pics/api/v1/hentai":
             url_endpoint = "hentai"
         
@@ -107,8 +108,8 @@ class testing(commands.Cog):
         
         
         
-        embed = discord.Embed(description=f"Found File: [{data['filename']}]({data['url']}) on endpoint: [{url_endpoint}](https://thino.pics{data['url']})", color=0xc98cbf )
-        embed.set_image(url=data['image'])
+        embed = discord.Embed(description=f"Found File: [{data.raw['filename']}]({data.raw['url']}) on endpoint: [{url_endpoint}](https://thino.pics{data.raw['url']})", color=0xc98cbf )
+        embed.set_image(url=f"https://i.thino.pics/{filename}")
         embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
         embed.set_footer(text="Powered by thino.pics!")
         await interaction.response.send_message(embed=embed)

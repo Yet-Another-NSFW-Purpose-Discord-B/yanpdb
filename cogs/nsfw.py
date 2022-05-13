@@ -11,9 +11,12 @@ from typing import Optional
 import thino
 
 
+    
+
 class nsfw(commands.Cog):
     def __init__(self, bot:commands.Bot):
         self.bot = bot
+        self.client = thino.Client()
 
     async def is_nsfw(interaction: discord.Interaction) -> bool:
         if interaction.channel.is_nsfw():
@@ -30,18 +33,17 @@ class nsfw(commands.Cog):
         Choice(name="tomboy", value="tomboy"),
         Choice(name="helltaker", value="helltaker"),
         Choice(name="femboy", value="femboy"),
-        Choice(name="dildo", value="dildo"),
         Choice(name="porn", value="porn"),
-        Choice(name="feet", value="feet")
     ])
     async def nsfw(self, interaction:discord.Interaction,endpoint:Choice[str]):
-        data = await thino.img(endpoint.value)
-        url = data["endpoint"]
+        data = await self.client.get(endpoint.value)
+        print(data.raw["url"])
+        print(data.raw["endpoint"])
         
         
         
-        embed = discord.Embed(description=f"File Name: [{data['filename']}]({data['url']}) \nEndpoint: [{endpoint.value}](https://thino.pics{data['endpoint']})", color=0xc98cbf )
-        embed.set_image(url=data['url'])
+        embed = discord.Embed(description=f"File Name: [{data.raw['filename']}]({data.raw['url']}) \nEndpoint: [{endpoint.value}](https://thino.pics{data.raw['endpoint']})", color=0xc98cbf )
+        embed.set_image(url=data.raw['url'])
         embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
         embed.set_footer(text="Powered by thino.pics!")
         await interaction.response.send_message(embed=embed)
@@ -156,20 +158,29 @@ class nsfw(commands.Cog):
                 data = await request.json()
                 url = data['url']
                 
-                if url == "https://thino.pics/api/v1/hentai":
-                    url_endpoint = "hentai"
-                
-                if url == "https://thino.pics/api/v1/helltaker":
-                    url_endpoint = "Helltaker"
+        if url == "https://thino.pics/api/v1/hentai":
+            url_endpoint = "hentai"
 
-                if url == "https://thino.pics/api/v1/neko":
-                    url_endpoint = "neko"
+        if url == "https://thino.pics/api/v1/helltaker":
+            url_endpoint = "Helltaker"
 
-                if url == "https://thino.pics/api/v1/tomboy":
-                    url_endpoint = "tomboy"
-                
-                if url == "https://thino.pics/api/v1/femboy":
-                    url_endpoint = "femboy"
+        if url == "https://thino.pics/api/v1/neko":
+            url_endpoint = "neko"
+
+        if url == "https://thino.pics/api/v1/tomboy":
+            url_endpoint = "tomboy"
+
+        if url == "https://thino.pics/api/v1/femboy":
+            url_endpoint = "femboy"
+
+        if url == "https://thino.pics/api/v1/thighs":
+            url_endpoint = "thighs"
+
+        if url == "https://thino.pics/api/v1/dildo":
+            url_endpoint = "dildo"
+
+        if url == "https://thino.pics/api/v1/porn":
+            url_endpoint = "porn"
         
         print(url_endpoint)
         print(url)
