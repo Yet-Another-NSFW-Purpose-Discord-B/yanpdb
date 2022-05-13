@@ -79,69 +79,57 @@ class nsfw(commands.Cog):
     @app_commands.command(description="Get Some Helltaker Porn")
     @app_commands.check(is_nsfw)
     async def helltaker(self, interaction: discord.Interaction):
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://thino.pics/api/v1/helltaker") as request:
-                data = await request.json()
-                print(data['url'])
-                embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
-                embed.set_image(url=data['url'])
-                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-                embed.set_footer(text="Powered by thino.pics!")
-                await interaction.response.send_message(embed=embed)
+        data = await self.client.helltaker()
+        embed = discord.Embed(description=f"**[Raw Image Link]({data.raw['url']})**", color=0xc98cbf )
+        embed.set_image(url=data.raw['url'])
+        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text="Powered by thino.pics!")
+        await interaction.response.send_message(embed=embed)
 
     @app_commands.command(description="Sends femboy porn")
     @app_commands.check(is_nsfw)
     async def femboy(self, interaction: discord.Interaction):
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://thino.pics/api/v1/femboy") as request:
-                data = await request.json()
-                print(data['url'])
-                embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
-                embed.set_image(url=data['url'])
-                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-                embed.set_footer(text="Powered by thino.pics!")
-                await interaction.response.send_message(embed=embed)
+        data = await self.client.femboy()
+        print(data.raw['url'])
+        embed = discord.Embed(description=f"**[Raw Image Link]({data.raw['url']})**", color=0xc98cbf )
+        embed.set_image(url=data.raw['url'])
+        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text="Powered by thino.pics!")
+        await interaction.response.send_message(embed=embed)
         
     @app_commands.command(description="Shows hentai")
     @app_commands.check(is_nsfw)
     async def hentai(self, interaction: discord.Interaction):
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://thino.pics/api/v1/hentai") as request:
-                data = await request.json()
-                print(data['url'])
-                embed = discord.Embed(description=f"**[Raw Image Link]({data['url']})**", color=0xc98cbf )
-                embed.set_image(url=data['url'])
-                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-                embed.set_footer(text="Powered by thino.pics!")
-                await interaction.response.send_message(embed=embed)
+        data = await self.client.femboy()
+        print(data.rwa['url'])
+        embed = discord.Embed(description=f"**[Raw Image Link]({data.raw['url']})**", color=0xc98cbf )
+        embed.set_image(url=data['url'])
+        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text="Powered by thino.pics!")
+        await interaction.response.send_message(embed=embed)
 
     @app_commands.command(description="Shows hot af tomboy porn")
     @app_commands.check(is_nsfw)
     async def tomboy(self, interaction: discord.Interaction):
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://thino.pics/api/v1/tomboy") as request:
-                data = await request.json()
-                print(data['url'])
+        data = await self.client.tomboy()
             
-                embed = discord.Embed(description=f"Found File: [{data['filename']}]({data['url']}) on endpoint: [tomboy](https://thino.pics/api/v1/tomboy)", color=0xc98cbf )
-                embed.set_image(url=data['url'])
-                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-                embed.set_footer(text="Powered by thino.pics!")
-                await interaction.response.send_message(embed=embed)
+        embed = discord.Embed(description=f"Found File: [{data.raw['filename']}]({data.raw['url']}) on endpoint: [tomboy](https://thino.pics/api/v1/tomboy)", color=0xc98cbf )
+        embed.set_image(url=data.raw['url'])
+        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text="Powered by thino.pics!")
+        await interaction.response.send_message(embed=embed)
 
     @app_commands.command(description="Shows hot af thighs porn")
     @app_commands.check(is_nsfw)
     async def thighs(self, interaction: discord.Interaction):
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://thino.pics/api/v1/thighs") as request:
-                data = await request.json()
-                print(data['url'])
-            
-                embed = discord.Embed(description=f"Found File: [{data['filename']}]({data['url']}) on endpoint: [thighs](https://thino.pics/api/v1/thighs)", color=0xc98cbf )
-                embed.set_image(url=data['url'])
-                embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-                embed.set_footer(text="Powered by thino.pics!")
-                await interaction.response.send_message(embed=embed)
+        data = await self.client.thighs()
+
+
+        embed = discord.Embed(description=f"Found File: [{data.raw['filename']}]({data.raw['url']}) on endpoint: [thighs](https://thino.pics/api/v1/thighs)", color=0xc98cbf )
+        embed.set_image(url=data.raw['url'])
+        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text="Powered by thino.pics!")
+        await interaction.response.send_message(embed=embed)
 
     @app_commands.command(description=f"Search for an image from the thino.pics API")
     @app_commands.check(is_nsfw)
