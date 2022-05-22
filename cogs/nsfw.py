@@ -1,4 +1,5 @@
 import datetime
+from io import BytesIO
 import aiohttp
 import discord
 from discord.ext import commands
@@ -131,55 +132,81 @@ class nsfw(commands.Cog):
         embed.set_footer(text="Powered by thino.pics!")
         await interaction.response.send_message(embed=embed)
 
+    @app_commands.command()
+    async def img(self, interaction: discord.Interaction, file: str):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"https://i.thino.pics/{file}") as request:
+                if request.status == 404:
+                    return await interaction.response.send_message("No image was found!")
+                else:
+                    bio = BytesIO(await request.read())
+                    bio.seek(0)
+
+                    await interaction.response.send_message(file=discord.File(bio, filename=file))
+            
+
     @app_commands.command(description=f"Search for an image from the thino.pics API")
     @app_commands.check(is_nsfw)
     async def search(self, interaction:discord.Interaction, image: str):
-        dir = "/root/yanpdb/nsfw_cdn/"
-        p = pathlib.Path(dir)
+        try:
         
-        for f in p.rglob(image):
-            print(str(f.parent))
+            dir = "/root/yanpdb/nsfw_cdn/"
+            p = pathlib.Path(dir)
+            
+            for f in p.rglob(image):
+                print(str(f.parent))
 
-        finished_url = f"https://i.thino.pics/{str(image)}"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f"https://thino.pics/search/{image}") as request:
-                data = await request.json()
-                url = data['url']
+
                 
-        if url == "https://thino.pics/api/v1/hentai":
-            url_endpoint = "hentai"
 
-        if url == "https://thino.pics/api/v1/helltaker":
-            url_endpoint = "Helltaker"
+            finished_url = f"https://i.thino.pics/{str(image)}"
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f"https://thino.pics/search/{image}") as request:
+                    data = await request.json()
+                    url = data['url']
+            
+                async with session.get(f"https://i.thino.pics/{image}") as req:
+                    if req.status == 404:
+                        return await interaction.response.send_message("No image was found!")
+                    else:
+                        bio = BytesIO(await req.read())
+                        bio.seek(0)
 
-        if url == "https://thino.pics/api/v1/neko":
-            url_endpoint = "neko"
+            if url == "https://thino.pics/api/v1/hentai":
+                url_endpoint = "hentai"
 
-        if url == "https://thino.pics/api/v1/tomboy":
-            url_endpoint = "tomboy"
+            if url == "https://thino.pics/api/v1/helltaker":
+                url_endpoint = "Helltaker"
 
-        if url == "https://thino.pics/api/v1/femboy":
-            url_endpoint = "femboy"
+            if url == "https://thino.pics/api/v1/neko":
+                url_endpoint = "neko"
 
-        if url == "https://thino.pics/api/v1/thighs":
-            url_endpoint = "thighs"
+            if url == "https://thino.pics/api/v1/tomboy":
+                url_endpoint = "tomboy"
 
-        if url == "https://thino.pics/api/v1/dildo":
-            url_endpoint = "dildo"
+            if url == "https://thino.pics/api/v1/femboy":
+                url_endpoint = "femboy"
 
-        if url == "https://thino.pics/api/v1/porn":
-            url_endpoint = "porn"
-        
-        print(url_endpoint)
-        print(url)
-        print(finished_url)
-        embed = discord.Embed(description=f"Found the file name: [{image}]({finished_url}) at the endpoint: [{url_endpoint}]({url})", timestamp=datetime.datetime.utcnow())
-        embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
-        embed.set_image(url=finished_url)
-        embed.set_footer(text="Powered by thino.pics!")
+            if url == "https://thino.pics/api/v1/thighs":
+                url_endpoint = "thighs"
 
-        await interaction.response.send_message(embed=embed)
+            if url == "https://thino.pics/api/v1/dildo":
+                url_endpoint = "dildo"
 
+            if url == "https://thino.pics/api/v1/porn":
+                url_endpoint = "porn"
+
+            print(url_endpoint)
+            print(url)
+            print(finished_url)
+            embed = discord.Embed(description=f"Found the file name: [{image}]({finished_url}) at the endpoint: [{url_endpoint}]({url})", timestamp=datetime.datetime.utcnow())
+            embed.set_author(name=interaction.user, icon_url=interaction.user.display_avatar.url)
+            embed.set_image(url=f"attachment://{image}")
+            embed.set_footer(text="Powered by thino.pics!")
+
+            await interaction.response.send_message(embed=embed, file=discord.File(bio, filename=image))
+        except KeyError:
+            await interaction.response.send_message("There was no image found!")
     @app_commands.command()
     async def status(self, interaction: discord.Interaction, endpoint: str):
         status_code = await thino.status(endpoint)

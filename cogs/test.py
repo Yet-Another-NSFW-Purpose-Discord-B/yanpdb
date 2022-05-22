@@ -1,6 +1,8 @@
+import asyncio
 import calendar
 import datetime
 import traceback
+import aiohttp
 import discord
 from discord.ext import commands
 from discord import app_commands    
@@ -114,6 +116,29 @@ class testing(commands.Cog):
         embed.set_footer(text="Powered by thino.pics!")
         await interaction.response.send_message(embed=embed)
 
+    @commands.command()
+    async def test1(self, ctx:commands.Context):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"http://127.0.0.1:6060/bot/users?id={ctx.author.id}") as request:
+                data = await request.json()
+                url = data["mutual_guilds"][0:1]
+                print(url)
+                message = await ctx.send(", ".join(str(song) for song in url))
+
+            async with session.get(f"http://127.0.0.1:6060/bot/servers?id={url}") as request:
+                server = await self.bot.fetch_guild(", ".join(str(song) for song in url))
+                server_data = await request.json()
+
+                print(server.id)
+
+    @commands.command()
+    async def reload(self, ctx: commands.Context, *, cog: str):
+        
+        try:
+            await self.bot.reload_extension(f"{cog}")
+            await ctx.send(f"Reloaded {cog}")
+        except Exception as e:
+            return await ctx.send(e)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(testing(bot))
